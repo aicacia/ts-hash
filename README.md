@@ -3,7 +3,7 @@
 non secure hash function
 
 ```ts
-import { hash } from "@stembord/hash";
+import { hash } from "@aicacia/hash";
 
 hash(0); // 0
 hash(42); // 42
