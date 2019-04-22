@@ -1,1 +1,1 @@
-export * from "./hash";
+export { hash } from "./hash";

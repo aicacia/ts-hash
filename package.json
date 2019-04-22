@@ -1,10 +1,10 @@
 {
-  "name": "@aicacia/hash",
-  "version": "0.1.0",
+  "name": "@stembord/hash",
+  "version": "0.1.1",
   "description": "non secure hash function",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/aicacia/ts-hash.git"
+    "url": "https://gitlab.com/stembord/libs/ts-hash.git"
   },
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
