@@ -8,5 +8,6 @@
     "strict": true,
     "lib": ["dom", "esnext"]
   },
-  "include": ["lib"]
+  "include": ["lib"],
+  "exclude": ["**/*.test.*"]
 }

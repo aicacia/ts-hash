@@ -1,5 +1,5 @@
 import tape = require("tape");
-import { hash } from "../lib";
+import { hash } from ".";
 
 tape("hash", (assert: tape.Test) => {
   assert.equals(hash(0), 0);
