@@ -1,6 +1,6 @@
 {
   "name": "@aicacia/hash",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "non secure hash function",
   "repository": {
     "type": "git",
