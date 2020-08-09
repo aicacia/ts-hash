@@ -1,7 +1,7 @@
 // https://github.com/facebook/immutable-js/blob/master/src/Hash.js
 
-const STRING_HASH_CACHE_MIN_STRLEN = 16;
-const STRING_HASH_CACHE_MAX_SIZE = 255;
+export const STRING_HASH_CACHE_MIN_STRLEN = 16;
+export const STRING_HASH_CACHE_MAX_SIZE = 255;
 
 let STRING_HASH_CACHE_SIZE = 0;
 let stringHashCache: { [key: string]: number } = {};
@@ -11,7 +11,7 @@ const defaultValueOf = Object.prototype.valueOf;
 const isExtensible = Object.isExtensible;
 
 // If possible, use a WeakMap.
-const USING_WEAK_MAP = typeof WeakMap === "function";
+export const USING_WEAK_MAP = typeof WeakMap === "function";
 let WEAK_MAP: WeakMap<any, number>;
 if (USING_WEAK_MAP) {
   WEAK_MAP = new WeakMap();
@@ -19,7 +19,7 @@ if (USING_WEAK_MAP) {
 
 let OBJECT_HASH_UID = 0;
 
-let UID_HASH_KEY: string = "__immutablehash__";
+let UID_HASH_KEY = "__immutablehash__";
 if (typeof Symbol === "function") {
   UID_HASH_KEY = Symbol(UID_HASH_KEY) as any;
 }
@@ -107,7 +107,7 @@ const hashString = (str: string): number => {
   return smi(hashed);
 };
 
-const hashJSObj = (obj: object): number => {
+const hashJSObj = (obj: Record<string, unknown>): number => {
   let hashed: number | undefined;
 
   if (USING_WEAK_MAP) {
@@ -131,7 +131,7 @@ const hashJSObj = (obj: object): number => {
       return hashed;
     }
 
-    hashed = getIENodeHash(obj as Node);
+    hashed = getIENodeHash(obj as any);
     if (hashed !== undefined) {
       return hashed;
     }
@@ -151,7 +151,7 @@ const hashJSObj = (obj: object): number => {
       enumerable: false,
       configurable: false,
       writable: false,
-      value: hashed
+      value: hashed,
     });
   } else if (
     obj.propertyIsEnumerable !== undefined &&
@@ -161,11 +161,8 @@ const hashJSObj = (obj: object): number => {
     // we'll hijack one of the less-used non-enumerable properties to
     // save our hash on it. Since this is a function it will not show up in
     // `JSON.stringify` which is what we want.
-    obj.propertyIsEnumerable = function() {
-      return this.constructor.prototype.propertyIsEnumerable.apply(
-        this,
-        arguments
-      );
+    obj.propertyIsEnumerable = function (...args: any[]) {
+      return this.constructor.prototype.propertyIsEnumerable.apply(this, args);
     };
     (obj as any).propertyIsEnumerable[UID_HASH_KEY] = hashed;
   } else if ((obj as any).nodeType !== undefined) {
