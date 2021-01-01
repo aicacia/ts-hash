@@ -4,7 +4,7 @@
   "description": "non secure hash function",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/aicacia/libs/ts-hash.git"
+    "url": "https://github.com/aicacia/ts-hash"
   },
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -15,7 +15,13 @@
     "test": "ts-node node_modules/.bin/tape src/**/*.test.{ts,tsx} | tap-spec",
     "coverage": "nyc --reporter=lcov --check-coverage --lines=70 --require ts-node/register tape src/**/*.test.{ts,tsx} | tap-spec; nyc report ---reporter=text",
     "clean": "rm -rf ./lib",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "prettier": "prettier --ignore-path ./.eslintignore --ignore-unknown --write ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier && npm run lint && npm run coverage"
+    }
   },
   "keywords": [
     "hash"
