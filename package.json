@@ -36,6 +36,7 @@
     "eslint": "7",
     "eslint-config-prettier": "7",
     "eslint-plugin-prettier": "3",
+    "husky": "4",
     "nyc": "15",
     "prettier": "2",
     "tap-nyc": "1",
