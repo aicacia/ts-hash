@@ -1,6 +1,7 @@
-export {
-  hash,
-  STRING_HASH_CACHE_MAX_SIZE,
-  STRING_HASH_CACHE_MIN_STRLEN,
-  USING_WEAK_MAP,
-} from "./hash";
+export { integerToBytes } from "./integerToBytes";
+export { defaultHasher } from "./defaultHasher";
+export { bytesToInteger } from "./bytesToInteger";
+export { FastHasher } from "./FastHasher";
+export { Hasher } from "./Hasher";
+export { hashOf, hash } from "./hash";
+export { smi } from "./smi";
