@@ -30,6 +30,8 @@ function hashInternal<H extends Hasher = Hasher>(value: any, hasher: H): H {
       hashSymbol(value, hasher);
     } else if (typeof value[Symbol.iterator] === "function") {
       hashIterable(value, hasher);
+    } else if (typeof value === "function") {
+      hashFunction(value, hasher);
     } else if (typeof value.length === "number") {
       hashArray(value, hasher);
     } else {
@@ -66,21 +68,38 @@ function hashIterable(iterable: Iterable<any>, hasher: Hasher) {
   hashNumber(length, hasher);
 }
 
+function hashFunction(value: (...args: any[]) => any, hasher: Hasher) {
+  if (value.prototype !== null && typeof value.prototype === "object") {
+    hashObject(value.prototype, hasher);
+  }
+  hashString(value.name, hasher);
+  hashNumber(value.length, hasher);
+}
+
 function hashArray(array: Array<any>, hasher: Hasher) {
+  const prototype = Object.getPrototypeOf(array);
+  if (
+    prototype !== null &&
+    typeof prototype === "object" &&
+    typeof prototype.constructor === "function"
+  ) {
+    hashObject(prototype.constructor, hasher);
+  }
   for (let i = 0, il = array.length; i < il; i++) {
     hashInternal(array[i], hasher);
   }
   hashNumber(array.length, hasher);
 }
 
-function hashObject(value: any, hasher: Hasher) {
+function hashObject(
+  object: { [key: string | symbol | number]: unknown },
+  hasher: Hasher
+) {
   let length = 0;
-  for (const key in value) {
-    if (value.hasOwnProperty(key)) {
-      hashString(key, hasher);
-      hashInternal(value[key], hasher);
-      length++;
-    }
+  for (const [k, v] of Object.entries(object)) {
+    hashString(k, hasher);
+    hashInternal(v, hasher);
+    length++;
   }
   hashNumber(length, hasher);
 }

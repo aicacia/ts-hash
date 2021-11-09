@@ -18,7 +18,9 @@ tape("hash it all", (assert: tape.Test) => {
     boolean = true,
     array = [boolean, 1],
     object = { key: "value" },
-    symbol = Symbol("symbol");
+    symbol = Symbol("symbol"),
+    noop = () => undefined,
+    fac = (x: number): number => (x < 2 ? 1 : x * fac(x - 1));
   const all = { string, number, array, object, symbol };
   assert.equal(hashOf(boolean), 1);
   assert.equal(hashOf(string), -867622775);
@@ -27,6 +29,20 @@ tape("hash it all", (assert: tape.Test) => {
   assert.equal(hashOf(object), -411031449);
   assert.equal(hashOf(symbol), -617543331);
   assert.equal(hashOf(all), 418146860);
+  assert.equal(hashOf(Promise), -919963040);
+  assert.equal(
+    hashOf(function fac(x: number): number {
+      return x < 2 ? 1 : x * fac(x - 1);
+    }),
+    999669163
+  );
+  assert.equal(hashOf(fac), 999669163);
+  assert.equal(hashOf(noop), -475815876);
+  assert.equal(
+    hashOf(() => undefined),
+    0
+  );
+  assert.equal(hashOf(new Map([[Symbol("map-key"), "map-value"]])), 310022534);
   assert.end();
 });
 
