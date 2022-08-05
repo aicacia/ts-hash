@@ -48,7 +48,11 @@ function hashString(value: string, hasher: Hasher) {
 }
 
 function hashNumber(value: number, hasher: Hasher) {
-  hasher.writeInteger(value);
+  if (value % 1 === 0) {
+    hasher.writeInteger(value);
+  } else {
+    hasher.writeFloat(value);
+  }
 }
 
 function hashBoolean(value: boolean, hasher: Hasher) {
@@ -74,6 +78,7 @@ function hashFunction(value: (...args: any[]) => any, hasher: Hasher) {
   }
   hashString(value.name, hasher);
   hashNumber(value.length, hasher);
+  hashString(value.toString(), hasher);
 }
 
 function hashArray(array: Array<any>, hasher: Hasher) {
