@@ -17,9 +17,7 @@ export function hash<H extends Hasher = Hasher>(value: any, hasher: H): H {
 }
 
 function hashInternal<H extends Hasher = Hasher>(value: any, hasher: H): H {
-  if (value != null && !ALREADY_HASHED_SET.has(value)) {
-    ALREADY_HASHED_SET.add(value);
-
+  if (value != null) {
     if (typeof value === "string") {
       hashString(value, hasher);
     } else if (typeof value === "number") {
@@ -100,11 +98,14 @@ function hashObject(
   object: { [key: string | symbol | number]: unknown },
   hasher: Hasher
 ) {
-  let length = 0;
-  for (const [k, v] of Object.entries(object)) {
-    hashString(k, hasher);
-    hashInternal(v, hasher);
-    length++;
+  if (!ALREADY_HASHED_SET.has(object)) {
+    ALREADY_HASHED_SET.add(object);
+    let length = 0;
+    for (const [k, v] of Object.entries(object)) {
+      hashString(k, hasher);
+      hashInternal(v, hasher);
+      length++;
+    }
+    hashNumber(length, hasher);
   }
-  hashNumber(length, hasher);
 }
