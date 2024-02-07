@@ -32,6 +32,8 @@ function hashInternal<H extends Hasher = Hasher>(value: any, hasher: H): H {
       hashFunction(value, hasher);
     } else if (typeof value.length === "number") {
       hashArray(value, hasher);
+    } else if (value instanceof Date) {
+      hashDate(value, hasher);
     } else {
       hashObject(value, hasher);
     }
@@ -80,18 +82,25 @@ function hashFunction(value: (...args: any[]) => any, hasher: Hasher) {
 }
 
 function hashArray(array: Array<any>, hasher: Hasher) {
-  const prototype = Object.getPrototypeOf(array);
-  if (
-    prototype !== null &&
-    typeof prototype === "object" &&
-    typeof prototype.constructor === "function"
-  ) {
-    hashObject(prototype.constructor, hasher);
+  if (!ALREADY_HASHED_SET.has(array)) {
+    ALREADY_HASHED_SET.add(array);
+    const prototype = Object.getPrototypeOf(array);
+    if (
+      prototype !== null &&
+      typeof prototype === "object" &&
+      typeof prototype.constructor === "function"
+    ) {
+      hashFunction(prototype.constructor, hasher);
+    }
+    for (let i = 0, il = array.length; i < il; i++) {
+      hashInternal(array[i], hasher);
+    }
+    hashNumber(array.length, hasher);
   }
-  for (let i = 0, il = array.length; i < il; i++) {
-    hashInternal(array[i], hasher);
-  }
-  hashNumber(array.length, hasher);
+}
+
+function hashDate(date: Date, hasher: Hasher) {
+  hashNumber(date.valueOf(), hasher);
 }
 
 function hashObject(
@@ -100,6 +109,14 @@ function hashObject(
 ) {
   if (!ALREADY_HASHED_SET.has(object)) {
     ALREADY_HASHED_SET.add(object);
+    const prototype = Object.getPrototypeOf(object);
+    if (
+      prototype !== null &&
+      typeof prototype === "object" &&
+      typeof prototype.constructor === "function"
+    ) {
+      hashFunction(prototype.constructor, hasher);
+    }
     let length = 0;
     for (const [k, v] of Object.entries(object)) {
       hashString(k, hasher);

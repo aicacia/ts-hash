@@ -28,15 +28,15 @@ tape("hash it all", (assert: tape.Test) => {
   assert.equal(hashOf(number), 10);
   assert.equal(hashOf(float), 6540971);
   assert.equal(hashOf(array), -732789116);
-  assert.equal(hashOf(object), -411031449);
+  assert.equal(hashOf(object), 175385407);
   assert.equal(hashOf(symbol), -617543331);
-  assert.equal(hashOf(all), 199793518);
-  assert.equal(hashOf(Promise), -653727512);
+  assert.equal(hashOf(all), 895435550);
+  assert.equal(hashOf(Promise), 419871680);
   assert.equal(
     hashOf(function fac(x: number): number {
       return x < 2 ? 1 : x * fac(x - 1);
     }),
-    873356686
+    154384486
   );
   assert.equal(hashOf(fac), 619930563);
   assert.equal(hashOf(noop), -379933830);
@@ -51,6 +51,15 @@ tape("hash it all", (assert: tape.Test) => {
 tape("hash recur", (assert: tape.Test) => {
   const object: Record<string, any> = { self: null };
   object.self = object;
-  assert.equal(hashOf(object), 679247147);
+  assert.equal(hashOf(object), 666972163);
+  assert.end();
+});
+
+tape("hash dates", (assert: tape.Test) => {
+  assert.equal(hashOf(new Date(1707318119003)), 3954916);
+  assert.notEqual(
+    hashOf(new Date(1707318119003)),
+    hashOf(new Date(1707318139739))
+  );
   assert.end();
 });
