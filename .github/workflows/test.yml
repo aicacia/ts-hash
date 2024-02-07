@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [18.x, 19.x, 20.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -27,10 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 14.x
+      - name: Use Node.js 20.x
         uses: actions/setup-node@v1
         with:
-          node-version: 14.x
+          node-version: 20.x
 
       - run: npm install -g npm@10
       - run: npm ci
