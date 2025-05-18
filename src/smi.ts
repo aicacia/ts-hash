@@ -3,5 +3,5 @@
 // This function drops the highest order bit in a signed number, maintaining
 // the sign bit.
 export function smi(i32: number): number {
-  return ((i32 >>> 1) & 0x40000000) | (i32 & 0xbfffffff);
+	return ((i32 >>> 1) & 0x40000000) | (i32 & 0xbfffffff);
 }
