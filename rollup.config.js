@@ -26,10 +26,7 @@ export default [
 				transformMixedEsModules: true,
 			}),
 			typescript({
-				tsconfig: "./tsconfig.esm.json",
-				compilerOptions: {
-					outDir: "browser",
-				},
+				tsconfig: "./tsconfig.browser.json",
 			}),
 		],
 	},

@@ -53,7 +53,7 @@ function hashNumber(value: number, hasher: Hasher) {
 }
 
 function hashBoolean(value: boolean, hasher: Hasher) {
-	hasher.writeInteger(value === true ? 1 : 0);
+	hasher.writeByte(value === true ? 1 : 0);
 }
 
 function hashSymbol(value: symbol, hasher: Hasher) {

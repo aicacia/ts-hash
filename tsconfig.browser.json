@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
-		"outDir": "esm",
+		"outDir": "browser",
 		"declarationDir": null,
 		"declaration": false
 	}

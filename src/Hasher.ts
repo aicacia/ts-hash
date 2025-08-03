@@ -3,6 +3,7 @@ import { integerToBytes } from "./integerToBytes";
 const BYTE_ARRAY = new Uint8Array(1);
 const INTEGER_ARRAY = new Uint8Array(4);
 const FLOAT_ARRAY = new Float32Array(1);
+const FLOAT_UINT8_ARRAY = new Uint8Array(FLOAT_ARRAY.buffer);
 
 export abstract class Hasher {
 	abstract finish(): number;
@@ -19,6 +20,6 @@ export abstract class Hasher {
 	}
 	writeFloat(float: number) {
 		FLOAT_ARRAY[0] = float;
-		return this.write(new Uint8Array(FLOAT_ARRAY.buffer));
+		return this.write(FLOAT_UINT8_ARRAY);
 	}
 }
