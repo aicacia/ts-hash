@@ -59,12 +59,11 @@ tape("hash it all", (assert: tape.Test) => {
 	assert.equal(hashOf(object), -411031449);
 	assert.equal(hashOf(map), 551924841);
 	assert.equal(hashOf(set), 514003678);
-	assert.equal(hashOf(noop), -36177384);
-	assert.equal(hashOf(fac), 412164193);
-	assert.equal(hashOf(array), 22326124);
-	assert.equal(hashOf(all), 380349785);
-	assert.equal(hashOf(Promise), -653727512);
-	assert.equal(hashOf(noop), -36177384);
+	assert.equal(hashOf(noop), -23253480);
+	assert.equal(hashOf(fac), 811075553);
+	assert.equal(hashOf(array), 1027625708);
+	assert.equal(hashOf(all), -707391520);
+	assert.equal(hashOf(Promise), -417712920);
 	assert.equal(hashOf(new Map([[Symbol("map-key"), "map-value"]])), 310022534);
 	assert.end();
 });

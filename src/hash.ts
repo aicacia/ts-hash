@@ -77,13 +77,23 @@ function hashIterable(iterable: Iterable<unknown>, hasher: Hasher) {
 	hashNumber(length, hasher);
 }
 
-function hashFunction(value: (...args: unknown[]) => unknown, hasher: Hasher) {
-	if (value.prototype !== null && typeof value.prototype === "object") {
-		hashObject(value.prototype, hasher);
+function hashFunction(func: (...args: unknown[]) => unknown, hasher: Hasher) {
+	if (!ALREADY_HASHED_SET.has(func)) {
+		ALREADY_HASHED_SET.add(func);
+		if (func.prototype !== null && typeof func.prototype === "object") {
+			hashObject(func.prototype, hasher);
+		}
+		hashString(func.name, hasher);
+		hashNumber(func.length, hasher);
+		hashString(func.toString(), hasher);
+		let length = 0;
+		for (const [k, v] of Object.entries(func)) {
+			hashString(k, hasher);
+			hashInternal(v, hasher);
+			length++;
+		}
+		hashNumber(length, hasher);
 	}
-	hashString(value.name, hasher);
-	hashNumber(value.length, hasher);
-	hashString(value.toString(), hasher);
 }
 
 function hashObject(
